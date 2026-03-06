@@ -3761,7 +3761,7 @@ async function matDownloadImg() {
     const dayBlocks = blocks.filter(b=>b.day===dayIdx).sort((a,b)=>a.startMin-b.startMin);
     const pdfLastEnd = {};
     dayBlocks.forEach(b => {
-      const profKey = b.prof || '';
+      const profKey = `${b.day}_${b.prof || ''}`;
       const prevEnd = pdfLastEnd[profKey];
       const snapStart = (prevEnd !== undefined && b.startMin - prevEnd >= 0 && b.startMin - prevEnd < 15) ? prevEnd : b.startMin;
       pdfLastEnd[profKey] = b.endMin;
@@ -4142,6 +4142,9 @@ function matSetSem(sem) {
     placeholder.style.display = 'none';
     matSelected = {};
     matPickerActive = new Set(matCoursesForSem().map(c => c.id));
+    // Reset day filter
+    matAllowedDays = new Set([0,1,2,3,4,5,6]);
+    document.querySelectorAll('.mat-day-chip').forEach(chip => chip.classList.add('active'));
     matRenderPicker();
     matRenderCourses();
     matRenderGrid();
